@@ -1,5 +1,5 @@
 
-let movies = require('../data/movies.json')
+
 module.exports =(req,res)=>{
     let baseURL = req.url.substring(0,req.url.lastIndexOf("/")+1);
     let id = req.url.split('/')[3];
@@ -11,7 +11,7 @@ module.exports =(req,res)=>{
     if(req.url === "/api/movies"){
         res.statusCode = 200;
         res.setHeader("Content-Type","application/json");
-        res.write(JSON.stringify(movies));
+        res.write(JSON.stringify(req.movies));
         res.end();
     }else if(!(regexV4.test(id))){
         res.writeHead(404,{"Content-Type": "application/json"});
@@ -19,7 +19,7 @@ module.exports =(req,res)=>{
     }else if(baseURL==="/api/movies/" && regexV4.test(id)){
         res.setHeader("Content-Type","application/json");
         //<------------- filtring out the result --------------->
-        let filteredMovies = movies.filter((movie)=>{
+        let filteredMovies = req.movies.filter((movie)=>{
             console.log(movie.id);
             return movie.id === id;
         });
